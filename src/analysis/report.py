@@ -34,18 +34,25 @@ class Report(object):
         meta = self.meta
 
         if meta['mode'] == 'local':
-            mm_cmd = []
-            if 'prepend_mm_cmds' in meta:
-                mm_cmd.append(meta['prepend_mm_cmds'])
-            mm_cmd += ['mm-link', meta['uplink_trace'], meta['downlink_trace']]
-            if 'extra_mm_link_args' in meta:
-                mm_cmd.append(meta['extra_mm_link_args'])
-            if 'append_mm_cmds' in meta:
-                mm_cmd.append(meta['append_mm_cmds'])
+            # mm_cmd = []
+            # if 'prepend_mm_cmds' in meta:
+            #     mm_cmd.append(meta['prepend_mm_cmds'])
+            # mm_cmd += ['mm-link', meta['uplink_trace'], meta['downlink_trace']]
+            # if 'extra_mm_link_args' in meta:
+            #     mm_cmd.append(meta['extra_mm_link_args'])
+            # if 'append_mm_cmds' in meta:
+            #     mm_cmd.append(meta['append_mm_cmds'])
 
-            mm_cmd = ' '.join(mm_cmd).replace('_', '\\_')
+            # mm_cmd = ' '.join(mm_cmd).replace('_', '\\_')
 
-            desc += 'Tested in mahimahi: \\texttt{%s}\n\n' % mm_cmd
+            # desc += 'Tested in mahimahi: \\texttt{%s}\n\n' % mm_cmd
+
+            rattan_cmd = ['rattan-cli']
+            if 'rattan_config' in meta:
+                rattan_cmd += ['-c', meta['rattan_config']]
+            rattan_cmd = ' '.join(rattan_cmd).replace('_', '\\_')
+            desc += 'Tested in rattan: \\texttt{%s}\n\n' % rattan_cmd
+            
         elif meta['mode'] == 'remote':
             txt = {}
             for side in ['local', 'remote']:
@@ -103,11 +110,11 @@ class Report(object):
             '%s'
             '\\end{verbatim}\n\n' % utils.get_sys_info())
 
-        desc += (
-            '\\begin{verbatim}\n'
-            'Git summary:\n'
-            '%s'
-            '\\end{verbatim}\n\n' % meta['git_summary'])
+        # desc += (
+        #     '\\begin{verbatim}\n'
+        #     'Git summary:\n'
+        #     '%s'
+        #     '\\end{verbatim}\n\n' % meta['git_summary'])
         desc += '\\newpage\n\n'
 
         return desc

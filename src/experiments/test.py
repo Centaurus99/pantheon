@@ -48,11 +48,12 @@ class Test(object):
 
         # local mode
         if self.mode == 'local':
-            self.datalink_trace = args.uplink_trace
-            self.acklink_trace = args.downlink_trace
-            self.prepend_mm_cmds = args.prepend_mm_cmds
-            self.append_mm_cmds = args.append_mm_cmds
-            self.extra_mm_link_args = args.extra_mm_link_args
+            self.rattan_config = args.rattan_config
+            # self.datalink_trace = args.uplink_trace
+            # self.acklink_trace = args.downlink_trace
+            # self.prepend_mm_cmds = args.prepend_mm_cmds
+            # self.append_mm_cmds = args.append_mm_cmds
+            # self.extra_mm_link_args = args.extra_mm_link_args
 
             # for convenience
             self.sender_side = 'remote'
@@ -101,6 +102,11 @@ class Test(object):
                     run_first=run_first,
                     run_second=run_second)
                 tun_id += 1
+
+    def setup_rattan_cmd(self):
+        self.rattan_cmd = ['rattan-cli']
+        if self.rattan_config:
+            self.rattan_cmd += ['-c', self.rattan_config]
 
     def setup_mm_cmd(self):
         mm_datalink_log = self.cc + '_mm_datalink_run%d.log' % self.run_id
@@ -213,7 +219,7 @@ class Test(object):
             self.prepare_tunnel_log_paths()
 
         if self.mode == 'local':
-            self.setup_mm_cmd()
+            self.setup_rattan_cmd()
         else:
             # record local and remote clock offset
             if self.ntp_addr is not None:
@@ -235,9 +241,9 @@ class Test(object):
 
         self.test_start_time = utils.utc_time()
         # run the other side specified by self.run_second
-        sh_cmd = 'python %s %s $MAHIMAHI_BASE %s' % (
+        sh_cmd = 'python %s %s $RATTAN_BASE %s' % (
             self.cc_src, self.run_second, port)
-        sh_cmd = ' '.join(self.mm_cmd) + " -- sh -c '%s'" % sh_cmd
+        sh_cmd = ' '.join(self.rattan_cmd) + " -- sh -c '%s'" % sh_cmd
         sys.stderr.write('Running %s %s...\n' % (self.cc, self.run_second))
         self.proc_second = Popen(sh_cmd, shell=True, preexec_fn=os.setsid)
 
@@ -290,7 +296,7 @@ class Test(object):
             else:
                 tc_manager_cmd = ['python', self.tunnel_manager]
         else:
-            tc_manager_cmd = self.mm_cmd + ['python', self.tunnel_manager]
+            tc_manager_cmd = self.rattan_cmd + ['python', self.tunnel_manager]
 
         sys.stderr.write('[tunnel client manager (tcm)] ')
         self.tc_manager = Popen(tc_manager_cmd, stdin=PIPE, stdout=PIPE,
@@ -340,7 +346,7 @@ class Test(object):
 
     def run_tunnel_client(self, tun_id, tc_manager, cmd_to_run_tc):
         if self.mode == 'local':
-            cmd_to_run_tc[1] = '$MAHIMAHI_BASE'
+            cmd_to_run_tc[1] = '$RATTAN_BASE'
         else:
             if self.server_side == 'remote':
                 cmd_to_run_tc[1] = self.r['ip']
@@ -669,14 +675,14 @@ class Test(object):
             acklink_tun_logs.append(acklink_tun_log)
 
         cmd = [merge_tunnel_logs, 'multiple', '-o', self.datalink_log]
-        if self.mode == 'local':
-            cmd += ['--link-log', self.mm_datalink_log]
+        # if self.mode == 'local':
+        #     cmd += ['--link-log', self.mm_datalink_log]
         cmd += datalink_tun_logs
         call(cmd)
 
         cmd = [merge_tunnel_logs, 'multiple', '-o', self.acklink_log]
-        if self.mode == 'local':
-            cmd += ['--link-log', self.mm_acklink_log]
+        # if self.mode == 'local':
+        #     cmd += ['--link-log', self.mm_acklink_log]
         cmd += acklink_tun_logs
         call(cmd)
 
@@ -745,8 +751,8 @@ class Test(object):
 
 def run_tests(args):
     # check and get git summary
-    git_summary = utils.get_git_summary(args.mode,
-                                        getattr(args, 'remote_path', None))
+    # git_summary = utils.get_git_summary(args.mode,
+    #                                     getattr(args, 'remote_path', None))
 
     # get cc_schemes
     if args.all:
@@ -769,7 +775,7 @@ def run_tests(args):
     # save metadata
     meta = vars(args).copy()
     meta['cc_schemes'] = sorted(cc_schemes)
-    meta['git_summary'] = git_summary
+    # meta['git_summary'] = git_summary
 
     metadata_path = path.join(args.data_dir, 'pantheon_metadata.json')
     utils.save_test_metadata(meta, metadata_path)

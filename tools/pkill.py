@@ -24,7 +24,7 @@ def main():
 
     # kill mahimahi shells and iperf
     pkill = 'pkill -f '
-    pkill_cmds = [pkill + 'mm-delay', pkill + 'mm-link', pkill + 'mm-loss',
+    pkill_cmds = [pkill + 'rattan-cli',
                   pkill + 'mm-tunnelclient', pkill + 'mm-tunnelserver',
                   pkill + '-SIGKILL iperf']
 

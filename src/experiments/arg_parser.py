@@ -112,25 +112,31 @@ def parse_test_shared(local, remote, config_args):
 
 
 def parse_test_local(local):
+    # local.add_argument(
+    #     '--uplink-trace', metavar='TRACE',
+    #     default=path.join(context.src_dir, 'experiments', '12mbps.trace'),
+    #     help='uplink trace (from sender to receiver) to pass to mm-link '
+    #     '(default pantheon/test/12mbps.trace)')
+    # local.add_argument(
+    #     '--downlink-trace', metavar='TRACE',
+    #     default=path.join(context.src_dir, 'experiments', '12mbps.trace'),
+    #     help='downlink trace (from receiver to sender) to pass to mm-link '
+    #     '(default pantheon/test/12mbps.trace)')
+    # local.add_argument(
+    #     '--prepend-mm-cmds', metavar='"CMD1 CMD2..."',
+    #     help='mahimahi shells to run outside of mm-link')
+    # local.add_argument(
+    #     '--append-mm-cmds', metavar='"CMD1 CMD2..."',
+    #     help='mahimahi shells to run inside of mm-link')
+    # local.add_argument(
+    #     '--extra-mm-link-args', metavar='"ARG1 ARG2..."',
+    #     help='extra arguments to pass to mm-link when running locally. Note '
+    #     'that uplink (downlink) always represents the link from sender to '
+    #     'receiver (from receiver to sender)')
+    
     local.add_argument(
-        '--uplink-trace', metavar='TRACE',
-        default=path.join(context.src_dir, 'experiments', '12mbps.trace'),
-        help='uplink trace (from sender to receiver) to pass to mm-link '
-        '(default pantheon/test/12mbps.trace)')
-    local.add_argument(
-        '--downlink-trace', metavar='TRACE',
-        default=path.join(context.src_dir, 'experiments', '12mbps.trace'),
-        help='downlink trace (from receiver to sender) to pass to mm-link '
-        '(default pantheon/test/12mbps.trace)')
-    local.add_argument(
-        '--prepend-mm-cmds', metavar='"CMD1 CMD2..."',
-        help='mahimahi shells to run outside of mm-link')
-    local.add_argument(
-        '--append-mm-cmds', metavar='"CMD1 CMD2..."',
-        help='mahimahi shells to run inside of mm-link')
-    local.add_argument(
-        '--extra-mm-link-args', metavar='"ARG1 ARG2..."',
-        help='extra arguments to pass to mm-link when running locally. Note '
+        '--rattan-config', metavar='"FILE"',
+        help='config file of rattan when running locally. Note '
         'that uplink (downlink) always represents the link from sender to '
         'receiver (from receiver to sender)')
 
@@ -166,13 +172,13 @@ def parse_test_remote(remote):
 
 
 def verify_test_args(args):
-    if args.flows == 0:
-        prepend = getattr(args, 'prepend_mm_cmds', None)
-        append = getattr(args, 'append_mm_cmds', None)
-        extra = getattr(args, 'extra_mm_link_args', None)
-        if append is not None or prepend is not None or extra is not None:
-            sys.exit('Cannot apply --prepend-mm-cmds, --append-mm-cmds or '
-                     '--extra-mm-link-args without pantheon tunnels')
+    # if args.flows == 0:
+    #     prepend = getattr(args, 'prepend_mm_cmds', None)
+    #     append = getattr(args, 'append_mm_cmds', None)
+    #     extra = getattr(args, 'extra_mm_link_args', None)
+    #     if append is not None or prepend is not None or extra is not None:
+    #         sys.exit('Cannot apply --prepend-mm-cmds, --append-mm-cmds or '
+    #                  '--extra-mm-link-args without pantheon tunnels')
 
     if args.runtime > 60 or args.runtime <= 0:
         sys.exit('runtime cannot be non-positive or greater than 60 s')
