@@ -12,7 +12,10 @@ def verify_schemes(schemes):
     all_schemes = utils.parse_config()['schemes'].keys()
 
     for cc in schemes:
-        if cc not in all_schemes:
+        cc_file_name = cc
+        if cc_file_name.endswith('_adj'):
+            cc_file_name = cc_file_name[:-4]
+        if cc_file_name not in all_schemes:
             sys.exit('%s is not a scheme included in src/config.yml' % cc)
 
 

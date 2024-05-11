@@ -34,7 +34,10 @@ def setup(args):
         return
 
     for cc in cc_schemes:
-        cc_src = path.join(context.src_dir, 'wrappers', cc + '.py')
+        cc_file_name = cc
+        if cc_file_name.endswith('_adj'):
+            cc_file_name = cc_file_name[:-4]
+        cc_src = path.join(context.src_dir, 'wrappers', cc_file_name + '.py')
 
         # install dependencies
         if args.install_deps:

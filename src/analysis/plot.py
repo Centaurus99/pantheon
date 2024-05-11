@@ -246,9 +246,17 @@ class Plot(object):
                 continue
 
             value = data[cc]
-            cc_name = schemes_config[cc]['name']
-            color = schemes_config[cc]['color']
-            marker = schemes_config[cc]['marker']
+            if cc.endswith('_adj'):
+                cc = cc[:-4]
+                cc_name = schemes_config[cc]['name'] + ' (adj)'
+                edgecolors = schemes_config[cc]['color']
+                color = 'none'
+                marker = schemes_config[cc]['marker']
+            else:
+                cc_name = schemes_config[cc]['name']
+                edgecolors = schemes_config[cc]['color']
+                color = edgecolors
+                marker = schemes_config[cc]['marker']
             y_data, x_data = zip(*value)
 
             # update min and max raw delay
@@ -257,7 +265,7 @@ class Plot(object):
 
             # plot raw values
             ax_raw.scatter(x_data, y_data, color=color, marker=marker,
-                           label=cc_name, clip_on=False)
+                           edgecolors=edgecolors, label=cc_name, clip_on=False)
 
             # plot the average of raw values
             x_mean = np.mean(x_data)
@@ -268,7 +276,7 @@ class Plot(object):
             max_mean_delay = max(x_mean, max_mean_delay)
 
             ax_mean.scatter(x_mean, y_mean, color=color, marker=marker,
-                            clip_on=False)
+                            edgecolors=edgecolors, clip_on=False)
             ax_mean.annotate(cc_name, (x_mean, y_mean))
 
         for fig_type, fig, ax in [('raw', fig_raw, ax_raw),

@@ -96,14 +96,20 @@ def verify_schemes_with_meta(schemes, meta):
         if cc not in all_schemes:
             sys.exit('%s is not a scheme included in '
                      'pantheon_metadata.json' % cc)
-        if cc not in schemes_config:
+        cc_file_name = cc
+        if cc_file_name.endswith('_adj'):
+            cc_file_name = cc_file_name[:-4]
+        if cc_file_name not in schemes_config:
             sys.exit('%s is not a scheme included in src/config.yml' % cc)
 
     return cc_schemes
 
 
 def who_runs_first(cc):
-    cc_src = path.join(context.src_dir, 'wrappers', cc + '.py')
+    cc_file_name = cc
+    if cc_file_name.endswith('_adj'):
+        cc_file_name = cc_file_name[:-4]
+    cc_src = path.join(context.src_dir, 'wrappers', cc_file_name + '.py')
 
     cmd = [cc_src, 'run_first']
     run_first = check_output(cmd).strip()
@@ -130,7 +136,10 @@ def parse_remote_path(remote_path, cc=None):
         ret['src_dir'], 'experiments', 'tunnel_manager.py')
 
     if cc is not None:
-        ret['cc_src'] = path.join(ret['src_dir'], 'wrappers', cc + '.py')
+        cc_file_name = cc
+        if cc_file_name.endswith('_adj'):
+            cc_file_name = cc_file_name[:-4]
+        ret['cc_src'] = path.join(ret['src_dir'], 'wrappers', cc_file_name + '.py')
 
     return ret
 

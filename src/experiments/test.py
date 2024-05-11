@@ -91,9 +91,13 @@ class Test(object):
             for flow in args.test_config['flows']:
                 cc = flow['scheme']
                 run_first, run_second = utils.who_runs_first(cc)
+                
+                cc_file_name = cc
+                if cc_file_name.endswith('_adj'):
+                    cc_file_name = cc_file_name[:-4]
 
-                local_p = path.join(context.src_dir, 'wrappers', cc + '.py')
-                remote_p = path.join(cc_src_remote_dir, 'wrappers', cc + '.py')
+                local_p = path.join(context.src_dir, 'wrappers', cc_file_name + '.py')
+                remote_p = path.join(cc_src_remote_dir, 'wrappers', cc_file_name + '.py')
 
                 self.flow_objs[tun_id] = Flow(
                     cc=cc,
@@ -192,7 +196,10 @@ class Test(object):
 
     def setup(self):
         # setup commonly used paths
-        self.cc_src = path.join(context.src_dir, 'wrappers', self.cc + '.py')
+        cc_file_name = self.cc
+        if cc_file_name.endswith('_adj'):
+            cc_file_name = cc_file_name[:-4]
+        self.cc_src = path.join(context.src_dir, 'wrappers', cc_file_name + '.py')
         self.tunnel_manager = path.join(context.src_dir, 'experiments',
                                         'tunnel_manager.py')
 
