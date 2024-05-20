@@ -102,6 +102,10 @@ def verify_schemes_with_meta(schemes, meta):
         if cc_file_name not in schemes_config:
             sys.exit('%s is not a scheme included in src/config.yml' % cc)
 
+    for cc in all_schemes:
+        if cc.endswith('_adj') and cc[:-4] not in cc_schemes:
+            cc_schemes.append(cc[:-4])
+    
     return cc_schemes
 
 
