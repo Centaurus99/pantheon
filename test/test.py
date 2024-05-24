@@ -727,10 +727,10 @@ def run_tests(args):
     for run_id in xrange(args.start_run_id,
                          args.start_run_id + args.run_times):
         # clean the contents in /tmp/pantheon-tmp
-        clean_tmp_cmd = 'rm -rf /tmp/pantheon-tmp/*'
-        if args.mode == 'remote':
-            call(ssh_cmd + [clean_tmp_cmd])
-        call(clean_tmp_cmd, shell=True)
+        # clean_tmp_cmd = 'rm -rf /tmp/pantheon-tmp/*'
+        # if args.mode == 'remote':
+        #     call(ssh_cmd + [clean_tmp_cmd])
+        # call(clean_tmp_cmd, shell=True)
 
         # ISSUE (ranysha): no support for multiple schemes where each uses diff
         # qdisc. since version 4.13 of the kernel, TCP supports packet pacing

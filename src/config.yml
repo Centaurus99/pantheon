@@ -44,6 +44,10 @@ schemes:
     friendly_name: Copa
     color: red
     marker: 'o'
+  kern_copa:
+    friendly_name: Copa
+    color: red
+    marker: 'o'
   taova:
     friendly_name: TaoVA-100x
     color: gray
@@ -90,7 +94,7 @@ schemes:
     marker: '<'
 
 kernel_attrs:
-  default_qdisc: pfifo_fast
+  default_qdisc: fq
   sock_recv_bufs:
     remote:
       max: '33554432'

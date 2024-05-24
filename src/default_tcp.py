@@ -18,11 +18,11 @@ def main():
         check_default_qdisc('default_tcp')
 
     if args.option == 'receiver':
-        cmd = ['iperf', '-s', '-p', args.port]
+        cmd = ['iperf', '-Z', 'cubic', '-s', '-p', args.port]
         wait_and_kill_iperf(Popen(cmd))
 
     if args.option == 'sender':
-        cmd = ['iperf', '-c', args.ip, '-p', args.port, '-t', '75']
+        cmd = ['iperf', '-Z', 'cubic', '-c', args.ip, '-p', args.port, '-t', '75']
         wait_and_kill_iperf(Popen(cmd))
 
 

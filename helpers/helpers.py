@@ -71,8 +71,9 @@ def parse_config():
 
 
 def update_submodules():
-    cmd = 'git submodule update --init --recursive'
-    check_call(cmd, shell=True)
+    return
+    # cmd = 'git submodule update --init --recursive'
+    # check_call(cmd, shell=True)
 
 
 class TimeoutError(Exception):
