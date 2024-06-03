@@ -19,6 +19,10 @@ schemes:
     name: PCC-Allegro
     color: cyan
     marker: '>'
+  kern_copa:
+    name: Copa
+    color: red
+    marker: 'o'
   verus:
     name: Verus
     color: skyblue
