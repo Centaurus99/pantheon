@@ -303,7 +303,7 @@ class Test(object):
             else:
                 tc_manager_cmd = ['python', self.tunnel_manager]
         else:
-            tc_manager_cmd = self.rattan_cmd + ['python', self.tunnel_manager]
+            tc_manager_cmd = self.rattan_cmd + ['--', 'python', self.tunnel_manager]
 
         sys.stderr.write('[tunnel client manager (tcm)] ')
         self.tc_manager = Popen(tc_manager_cmd, stdin=PIPE, stdout=PIPE,
